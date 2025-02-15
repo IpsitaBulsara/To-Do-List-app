@@ -1,5 +1,6 @@
 /.venv/
-.idea
+idea.txt
+projects.py
 bonus15.py
 e1.py
 e2.py
