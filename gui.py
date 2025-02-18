@@ -1,6 +1,11 @@
 import functions
 import FreeSimpleGUI as sg
 import time
+import os
+
+if not os.path.exists("todos.txt"):
+    with open("todos.txt", "w") as file:
+        pass
 
 sg.theme("Black")
 clock = sg.Text('', key='clock')
@@ -23,14 +28,21 @@ while True:
 
     event, values = window.read(timeout=10)
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
+    if event in (sg.WIN_CLOSED, "Exit"):
+        break
 
     match event:
         case "Add":
             todos = functions.get_todos()
-            new_todo = values['todo'] + "\n"
-            todos.append(new_todo)
-            functions.write_todos(todos)
-            window['todos'].update(values=todos)
+            new_todo = values['todo'].strip()  # Remove leading/trailing spaces
+
+            if new_todo:  # Prevent empty or space-only entries
+                todos.append(new_todo + "\n")
+                functions.write_todos(todos)
+                window['todos'].update(values=todos)
+                window['todo'].update(value="")
+            else:
+                sg.popup("To-do cannot be empty or just spaces!")
         case "Edit":
             try:
                 todo_to_edit = values['todos'][0]
@@ -52,13 +64,6 @@ while True:
                 window['todo'].update(value="")
             except IndexError:
                 sg.popup("Please select an item first.")
-        case "Exit":
-            break
-
         case 'todos':
             window['todo'].update(value=values['todos'][0])
-
-        case sg.WIN_CLOSED:
-            break
-
 window.close()
