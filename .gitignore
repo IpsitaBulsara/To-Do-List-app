@@ -1,14 +1,5 @@
 /.venv/
 idea.txt
 projects.py
-bonus/bonus15.py
-bonus/e1.py
-bonus/e2.py
-bonus/e3.py
-bonus/e4.py
-bonus/main2.py
-bonus/output.zip
-bonus/questions.json
-bonus/weather.csv
-bonus/passwordChecker
+bonus
 password.py
